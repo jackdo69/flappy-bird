@@ -1,4 +1,5 @@
 import './style.css';
+import bg from './pipeBottom.png';
 
 export default function PipeBottom({ height, left }) {
   return (
@@ -8,6 +9,7 @@ export default function PipeBottom({ height, left }) {
         height: 400 - height,
         top: height + 200,
         left: left,
+        backgroundImage: `url(${bg})`,
       }}
     ></div>
   );

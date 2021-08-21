@@ -22,6 +22,9 @@ const pipeSlice = createSlice({
         }
       }
     },
+    clearPipes(state, _) {
+      state.pipes = [];
+    },
   },
 });
 

@@ -9,12 +9,17 @@ const birdSlice = createSlice({
   initialState: initialBirdState,
   reducers: {
     fly(state, action) {
-      state.top -= 30;
+      if (state.top > 20) {
+        state.top -= 30;
+      }
     },
     fall(state, action) {
       if (state.top < 530) {
         state.top += 5;
       }
+    },
+    reset(state, _) {
+      state.top = 300;
     },
   },
 });

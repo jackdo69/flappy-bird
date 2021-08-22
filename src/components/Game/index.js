@@ -40,6 +40,7 @@ export default function Game() {
   const [newPipeId, setNewPipeId] = useState('');
   const [shiftingPipeId, setShiftingPipeId] = useState('');
   const [increaseScoreId, setIncreaseScoreId] = useState('');
+  const [difficultyId, setDifficultyId] = useState('');
   const dispatch = useDispatch();
 
   //redux states
@@ -117,19 +118,25 @@ export default function Game() {
       if (!vital) {
         gameOver();
       }
-    }, 50);
+    }, 100);
     setShiftingPipeId(shiftingPipeId);
     //score increasing
     const increaseScoreId = setInterval(() => {
       dispatch(gameActions.increaseCurrentScore(10));
     }, 1000);
     setIncreaseScoreId(increaseScoreId);
+    //increase difficulty
+    const increaseDifficultyId = setInterval(() => {
+      dispatch(pipeActions.increaseDifficulty());
+    }, 6000);
+    setDifficultyId(increaseDifficultyId);
   }
 
   function pause() {
     clearInterval(newPipeId);
     clearInterval(shiftingPipeId);
     clearInterval(increaseScoreId);
+    clearInterval(difficultyId);
     setNewPipeId('');
     setShiftingPipeId('');
     setIncreaseScoreId('');
@@ -152,6 +159,8 @@ export default function Game() {
     //reset score
     dispatch(gameActions.resetScore());
     dispatch(gameActions.setStatus('IDLE'));
+    //reset difficult level
+    dispatch(pipeActions.resetDifficulty());
   }
 
   // when the game component is rendered

@@ -2,4 +2,5 @@
   /* background-color: greenyellow; */
   width: 70px;
   position: absolute;
+  transition-duration: 50ms;
 }

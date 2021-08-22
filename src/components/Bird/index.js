@@ -6,6 +6,9 @@ import { useEffect, useState } from 'react';
 
 function Bird({ top }) {
   const gameStatus = store.getState().game.status;
+  const isFlying = store.getState().bird.isFlying;
+  let angle;
+  isFlying ? (angle = -40) : (angle = 0);
   const [img, setImg] = useState(bird);
 
   useEffect(() => {
@@ -22,6 +25,8 @@ function Bird({ top }) {
       style={{
         top: top,
         backgroundImage: `url(${img})`,
+        transform: `rotate(${angle}deg)`,
+        transitionDuration: '0.1s',
       }}
     ></div>
   );

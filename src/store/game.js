@@ -14,7 +14,7 @@ const gameSlice = createSlice({
     setStatus(state, action) {
       state.status = action.payload;
     },
-    setCurrentScore(state, action) {
+    increaseCurrentScore(state, action) {
       state.currentScore += action.payload;
     },
     setHighestScore(state, action) {

@@ -15,7 +15,7 @@ const birdSlice = createSlice({
     },
     fall(state, action) {
       if (state.top < 530) {
-        state.top += 5;
+        state.top += 3;
       }
     },
     reset(state, _) {

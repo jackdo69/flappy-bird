@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { pipeActions } from '../../store/pipe';
 import { birdActions } from '../../store/bird';
-import game, { gameActions } from '../../store/game';
+import { gameActions } from '../../store/game';
 import styled, { keyframes } from 'styled-components';
 import bg from './bg.png';
 
@@ -49,27 +49,24 @@ export default function Game() {
   const isVital = () => {
     const pipes = store.getState().pipe.pipes;
     const birdPos = store.getState().bird.top;
-
     if (birdPos >= 530) {
       //hit the ground
       return false;
     }
-
     if (pipes && pipes.length) {
       const { height, left } = pipes[0];
-
       const hit = birdPos < height || birdPos > height + 130;
       if (left <= 98 && hit) {
         //hit the pipe
         return false;
       }
     }
-
     return true;
   };
 
   function handleKeypress(e) {
-    if (e.code === 'Space') {
+    const status = store.getState().game.status;
+    if (e.code === 'Space' && status === 'STARTED') {
       dispatch(birdActions.fly());
     }
   }
@@ -77,11 +74,11 @@ export default function Game() {
   function handleGameStatus(status) {
     switch (status) {
       case 'STARTED':
-        startGame();
+        start();
         break;
 
       case 'PAUSE':
-        pauseGame();
+        pause();
         break;
 
       case 'REPLAY':
@@ -99,7 +96,7 @@ export default function Game() {
     }
   }
 
-  function startGame() {
+  function start() {
     //adding new pipes
     const newPipeId = setInterval(() => {
       const randomHeight = generateRandomInteger(50, 400);
@@ -109,30 +106,27 @@ export default function Game() {
           left: 750,
         })
       );
-    }, 8000);
+    }, 5000);
     setNewPipeId(newPipeId);
     setAnimationTime(40);
-
     //shifting pipes, bird falling
     const shiftingPipeId = setInterval(() => {
       dispatch(pipeActions.shiftPipes());
       dispatch(birdActions.fall());
       const vital = isVital();
       if (!vital) {
-        console.log('Game over');
         gameOver();
       }
-    }, 100);
+    }, 50);
     setShiftingPipeId(shiftingPipeId);
-
     //score increasing
     const increaseScoreId = setInterval(() => {
-      dispatch(gameActions.setCurrentScore(10));
+      dispatch(gameActions.increaseCurrentScore(10));
     }, 1000);
     setIncreaseScoreId(increaseScoreId);
   }
 
-  function pauseGame() {
+  function pause() {
     clearInterval(newPipeId);
     clearInterval(shiftingPipeId);
     clearInterval(increaseScoreId);
@@ -150,6 +144,7 @@ export default function Game() {
   }
 
   function replay() {
+    pause();
     //clear all the pipes
     dispatch(pipeActions.clearPipes());
     //reset bird position

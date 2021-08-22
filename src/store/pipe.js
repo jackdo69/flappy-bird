@@ -14,7 +14,7 @@ const pipeSlice = createSlice({
     shiftPipes(state, _) {
       if (state.pipes && state.pipes.length) {
         for (let pipe of state.pipes) {
-          pipe.left -= 4;
+          pipe.left -= 2;
         }
 
         if (state.pipes[0].left <= 0) {
